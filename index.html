@@ -1,30 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #121010;
+            color: #f0eaea;
+            padding: 10px 20px;
+        }
+
+        .calculator-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .calculator {
+            width: 500px;
+            padding: 60px;
+            background-color: #757272;
+            box-shadow: 0 2px 5px #888;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #display {
+            width: 100%;
+            font-size: 24px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 5px;
+            justify-content: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .operator-btn {
+            background-color: #888582;
+        }
+
+        .function-btn {
+            background-color: #333;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-   <h1>calculator app</h1>
-   <form onsubmit="doSum(event)"> 
-    a1 : <input type="number" id="firstNumber" required step="0.001">
-    <br>
-    a2 : <input type="number" id="secondNumber"required step="0.001">
-    <br>
-    <button type="submit"> addition</button>
-    <h1 id="resultWindow"></h1>
+    <div class="header">
+        <h1>Calculator</h1>
+        
+    </div>
+    <div class="calculator-container">
+        <div class="calculator">
+            <input id="display" type="text" readonly>
+            <div class="buttons">
+                <button class="function-btn" onclick="clearDisplay()">C</button>
+                <button class="function-btn" onclick="addToMemory()">M+</button>
+                <button class="function-btn" onclick="subtractFromMemory()">M-</button>
+                <button class="function-btn" onclick="recallMemory()">MR</button>
+                <button class="function-btn" onclick="clearMemory()">MC</button>
+                <button onclick="appendToDisplay('7')">7</button>
+                <button onclick="appendToDisplay('8')">8</button>
+                <button onclick="appendToDisplay('9')">9</button>
+                <button class="operator-btn" onclick="appendToDisplay('+')">+</button>
+                <button onclick="appendToDisplay('4')">4</button>
+                <button onclick="appendToDisplay('5')">5</button>
+                <button onclick="appendToDisplay('6')">6</button>
+                <button class="operator-btn" onclick="appendToDisplay('-')">-</button>
+                <button onclick="appendToDisplay('1')">1</button>
+                <button onclick="appendToDisplay('2')">2</button>
+                <button onclick="appendToDisplay('3')">3</button>
+                <button class="operator-btn" onclick="appendToDisplay('')"></button>
+                <button onclick="appendToDisplay('0')">0</button>
+                <button onclick="appendToDisplay('.')">.</button>
+                <button class="operator-btn" onclick="appendToDisplay('/')">/</button>
+                <button class="function-btn" onclick="calculateResult()">=</button>
+                <button class="function-btn" onclick="toggleScientific()">Sci</button>
+                <button class="function-btn" onclick="applyFunction('sqrt')">√</button>
+                <button class="function-btn" onclick="applyFunction('square')">x²</button>
+                <button class="function-btn" onclick="applyFunction('reciprocal')">1/x</button>
+                <button class="function-btn" onclick="applyFunction('percent')">%</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('display');
+        let memory = 0;
+        let isScientific = false;
 
-</form>
-    
+        function appendToDisplay(value) {
+            display.value += value;
+        }
 
+        function clearDisplay() {
+            display.value = '';
+        }
 
+        function addToMemory() {
+            memory += parseFloat(display.value);
+            clearDisplay();
+        }
 
+        function subtractFromMemory() {
+            memory -= parseFloat(display.value);
+            clearDisplay();
+        }
 
+        function recallMemory() {
+            display.value = memory;
+        }
 
+        function clearMemory() {
+            memory = 0;
+        }
 
+        function toggleScientific() {
+            isScientific = !isScientific;
+        }
 
-    <script src="./script.mjs"></script>
+        function applyFunction(func) {
+            let value = parseFloat(display.value);
+            if (func === 'sqrt') {
+                value = Math.sqrt(value);
+            } else if (func === 'square') {
+                value = value * value;
+            } else if (func === 'reciprocal') {
+                value = 1 / value;
+            } else if (func === 'percent') {
+                value = value / 100;
+            }
+            display.value = value;
+        }
+
+        function calculateResult() {
+            try {
+                let result = eval(display.value);
+                display.value = result;
+            } catch (error) {
+                display.value = 'Error';
+            }
+        }
+    </script>
 </body>
-
-</html>
